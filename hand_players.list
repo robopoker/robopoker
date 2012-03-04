@@ -1,0 +1,2 @@
+0  vbo     100     local   python ./test_bots/local/check_call_any.py
+1b lenny   100     http    http://robopoker.org/test_bots/check_call_any.php

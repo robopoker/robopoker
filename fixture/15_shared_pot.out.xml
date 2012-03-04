@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<game>
+    <table button="1">
+        <player in_stack="90" name="vbo" sit="0" stack="90">
+            <pocket>
+                <card rank="6" suit="D"/>
+                <card rank="6" suit="C"/>
+            </pocket>
+            <transport service="python ./test_bots/local/check_call_any.py" type="local"/>
+        </player>
+        <player in_stack="90" name="lenny" sit="1" stack="90">
+            <pocket>
+                <card rank="6" suit="H"/>
+                <card rank="6" suit="S"/>
+            </pocket>
+            <transport service="python ./test_bots/local/check_call_any.py" type="local"/>
+        </player>
+    </table>
+    <posts>
+        <post amount="10" player="vbo" type="small_blind"/>
+        <post amount="20" player="lenny" type="big_blind"/>
+    </posts>
+    <betting>
+        <round name="preflop">
+            <action amount="20" player="vbo" type="call"/>
+            <action amount="20" player="lenny" type="check"/>
+        </round>
+        <round name="flop">
+            <action amount="0" player="vbo" type="check"/>
+            <action amount="0" player="lenny" type="check"/>
+        </round>
+        <round name="turn">
+            <action amount="0" player="vbo" type="check"/>
+            <action amount="0" player="lenny" type="check"/>
+        </round>
+        <round name="river">
+            <action amount="0" player="vbo" type="check"/>
+            <action amount="0" player="lenny" type="check"/>
+        </round>
+    </betting>
+    <community>
+        <card rank="A" suit="D"/>
+        <card rank="7" suit="S"/>
+        <card rank="7" suit="H"/>
+        <card rank="A" suit="H"/>
+        <card rank="8" suit="H"/>
+    </community>
+    <showdown>
+        <player name="vbo" win="20">
+            <hand>
+                <card rank="6" suit="D"/>
+                <card rank="6" suit="C"/>
+            </hand>
+        </player>
+        <player name="lenny" win="20">
+            <hand>
+                <card rank="6" suit="H"/>
+                <card rank="6" suit="S"/>
+            </hand>
+        </player>
+    </showdown>
+</game>

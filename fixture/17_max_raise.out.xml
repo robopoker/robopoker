@@ -1,0 +1,73 @@
+<?xml version="1.0" ?>
+<game>
+    <table button="1">
+        <player in_stack="900" name="vbo" sit="0" stack="1380">
+            <pocket>
+                <card rank="6" suit="D"/>
+                <card rank="6" suit="C"/>
+            </pocket>
+            <transport service="python ./test_bots/local/bet_raise_any.py" type="local"/>
+        </player>
+        <player in_stack="900" name="lenny" sit="1" stack="420">
+            <pocket>
+                <card rank="2" suit="D"/>
+                <card rank="A" suit="C"/>
+            </pocket>
+            <transport service="python ./test_bots/local/bet_raise_any.py" type="local"/>
+        </player>
+    </table>
+    <posts>
+        <post amount="10" player="vbo" type="small_blind"/>
+        <post amount="20" player="lenny" type="big_blind"/>
+    </posts>
+    <betting>
+        <round name="preflop">
+            <action amount="40" player="vbo" type="raise"/>
+            <action amount="60" player="lenny" type="raise"/>
+            <action amount="80" player="vbo" type="raise"/>
+            <action amount="80" player="lenny" type="call"/>
+        </round>
+        <round name="flop">
+            <action amount="20" player="vbo" type="bet"/>
+            <action amount="40" player="lenny" type="raise"/>
+            <action amount="60" player="vbo" type="raise"/>
+            <action amount="80" player="lenny" type="raise"/>
+            <action amount="80" player="vbo" type="call"/>
+        </round>
+        <round name="turn">
+            <action amount="40" player="vbo" type="bet"/>
+            <action amount="80" player="lenny" type="raise"/>
+            <action amount="120" player="vbo" type="raise"/>
+            <action amount="160" player="lenny" type="raise"/>
+            <action amount="160" player="vbo" type="call"/>
+        </round>
+        <round name="river">
+            <action amount="40" player="vbo" type="bet"/>
+            <action amount="80" player="lenny" type="raise"/>
+            <action amount="120" player="vbo" type="raise"/>
+            <action amount="160" player="lenny" type="raise"/>
+            <action amount="160" player="vbo" type="call"/>
+        </round>
+    </betting>
+    <community>
+        <card rank="A" suit="D"/>
+        <card rank="7" suit="S"/>
+        <card rank="6" suit="H"/>
+        <card rank="A" suit="H"/>
+        <card rank="8" suit="H"/>
+    </community>
+    <showdown>
+        <player name="vbo" win="960">
+            <hand>
+                <card rank="6" suit="D"/>
+                <card rank="6" suit="C"/>
+            </hand>
+        </player>
+        <player name="lenny" win="0">
+            <hand>
+                <card rank="2" suit="D"/>
+                <card rank="A" suit="C"/>
+            </hand>
+        </player>
+    </showdown>
+</game>

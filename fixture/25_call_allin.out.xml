@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<game>
+    <table button="0">
+        <player in_stack="90" name="vbo" sit="0" stack="65">
+            <pocket>
+                <card rank="2" suit="D"/>
+                <card rank="A" suit="C"/>
+            </pocket>
+            <transport service="python ./test_bots/local/bet_raise_any.py" type="local"/>
+        </player>
+        <player in_stack="25" name="lenny" sit="1" stack="50">
+            <pocket>
+                <card rank="6" suit="D"/>
+                <card rank="6" suit="C"/>
+            </pocket>
+            <transport service="python ./test_bots/local/bet_raise_any.py" type="local"/>
+        </player>
+    </table>
+    <posts>
+        <post amount="10" player="lenny" type="small_blind"/>
+        <post amount="20" player="vbo" type="big_blind"/>
+    </posts>
+    <betting>
+        <round name="preflop">
+            <action amount="25" player="lenny" type="allin"/>
+            <action amount="25" player="vbo" type="call"/>
+        </round>
+        <round name="flop"/>
+        <round name="turn"/>
+        <round name="river"/>
+    </betting>
+    <community>
+        <card rank="A" suit="C"/>
+        <card rank="7" suit="S"/>
+        <card rank="6" suit="H"/>
+        <card rank="T" suit="H"/>
+        <card rank="9" suit="H"/>
+    </community>
+    <showdown>
+        <player name="lenny" win="50">
+            <hand>
+                <card rank="6" suit="D"/>
+                <card rank="6" suit="C"/>
+            </hand>
+        </player>
+        <player name="vbo" win="0">
+            <hand>
+                <card rank="2" suit="D"/>
+                <card rank="A" suit="C"/>
+            </hand>
+        </player>
+    </showdown>
+</game>

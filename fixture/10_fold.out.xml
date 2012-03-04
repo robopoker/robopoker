@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<game>
+    <table button="1">
+        <player in_stack="90" name="vbo" sit="0" stack="110">
+            <pocket>
+                <card rank="6" suit="D"/>
+                <card rank="6" suit="C"/>
+            </pocket>
+            <transport service="python ./test_bots/local/check_call_any.py" type="local"/>
+        </player>
+        <player in_stack="90" name="lenny" sit="1" stack="70">
+            <pocket>
+                <card rank="2" suit="D"/>
+                <card rank="A" suit="C"/>
+            </pocket>
+            <transport service="python ./test_bots/local/fold_any.py" type="local"/>
+        </player>
+    </table>
+    <posts>
+        <post amount="10" player="vbo" type="small_blind"/>
+        <post amount="20" player="lenny" type="big_blind"/>
+    </posts>
+    <betting>
+        <round name="preflop">
+            <action amount="20" player="vbo" type="call"/>
+            <action amount="20" player="lenny" type="fold"/>
+        </round>
+        <round name="flop"/>
+        <round name="turn"/>
+        <round name="river"/>
+    </betting>
+    <community>
+        <card rank="A" suit="C"/>
+        <card rank="7" suit="S"/>
+        <card rank="6" suit="H"/>
+        <card rank="A" suit="H"/>
+        <card rank="8" suit="H"/>
+    </community>
+    <showdown>
+        <player name="vbo" win="40"/>
+    </showdown>
+</game>

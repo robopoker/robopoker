@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<game>
+    <table button="1">
+        <player name="vbo" sit="0" stack="900">
+            <transport service="python ./test_bots/local/bet_raise_any.py" type="local"/>
+        </player>
+        <player name="lenny" sit="1" stack="900">
+            <transport service="python ./test_bots/local/bet_raise_any.py" type="local"/>
+        </player>
+    </table>
+    <deck>
+        <card rank="8" suit="H"/>
+        <card rank="T" suit="H"/>
+        <card rank="A" suit="H"/>
+        <card rank="4" suit="S"/>
+        <card rank="6" suit="H"/>
+        <card rank="7" suit="S"/>
+        <card rank="A" suit="D"/>
+        <card rank="Q" suit="D"/>
+        <card rank="A" suit="C"/>
+        <card rank="6" suit="C"/>
+        <card rank="2" suit="D"/>
+        <card rank="6" suit="D"/>
+    </deck>
+</game>
