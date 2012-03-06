@@ -1,3 +1,4 @@
+#!/usr/bin/python
 """
 Create hand mode:
     Usage: <INPUT> | python platform.py create_hand > initial_hand_state.xml

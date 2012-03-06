@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import re
 import os
 from glob import iglob

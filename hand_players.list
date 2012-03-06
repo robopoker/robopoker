@@ -1,2 +1,4 @@
-0  vbo     100     local   python ./test_bots/local/check_call_any.py
-1b lenny   100     http    http://robopoker.org/test_bots/check_call_any.php
+#   name    stack   transport   service
+0   vbo     200     http        http://robopoker.org/test_bots/check_call_any.php
+1b  lenny   200     http        http://robopoker.org/test_bots/check_call_any.php
+# ... add your bot here
