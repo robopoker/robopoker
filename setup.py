@@ -9,7 +9,12 @@ setup(
     download_url='http://robopoker.org.vbo.dev.vbo.name/about/sdk/',
     packages=['robopoker', 'robopoker.handstate'],
     scripts=['platform.py'],
-    data_files=[('',['create.bat', 'play.bat', 'create.sh',  'play.sh', 'hand_players.list'])],
+    data_files=[('',[
+        'create.bat', 'play.bat',
+        'create.sh',  'play.sh',
+        'hand_players.list',
+        'LICENSE', 'README.md'
+    ])],
 
     zipfile=None,
     console=['platform.py'],
