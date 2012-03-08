@@ -70,10 +70,13 @@ class Controller:
         dest.write(state.dump(False))
 
     def do_publish_state(self):
+        player = None
+        if len(sys.argv) > 2:
+            player = sys.argv[2]
         source = sys.stdin
         dest = sys.stdout
         dest.write(handstate_repr.echo(
-            handstate_repr.to_public(handstate_repr.open(source))
+            handstate_repr.to_public(handstate_repr.open(source), player)
         ))
 
 

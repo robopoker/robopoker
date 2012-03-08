@@ -37,9 +37,11 @@ def to_public(root, player=None):
     deck = root.find('deck')
     if deck is not None:
         root.remove(root.find('deck'))
-    acts = root.findall('round/action')
+    acts = root.findall('betting/round/action')
     for a in acts:
         w = a.find('error')
+        if w is None:
+            continue
         if not player or a.get('player') != player:
             a.remove(w)
     return root
