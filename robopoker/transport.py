@@ -1,8 +1,10 @@
 from subprocess import Popen, PIPE, STDOUT
 from urllib import urlencode
 from urllib2 import urlopen, URLError
+import socket
 
 def create(type, service):
+    socket.setdefaulttimeout(HTTP.TIMEOUT + 2)
     return {'local': Local, 'http': HTTP}[type](service)
 
 
@@ -53,7 +55,6 @@ class HTTP(Abstract):
                 last_err = str(e)
                 try_no += 1
         raise Error(last_err)
-
 
 class Error(Exception):
     pass
