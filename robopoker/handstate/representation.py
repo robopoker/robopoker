@@ -23,7 +23,7 @@ def dump(state, public=True, pretty=True):
 
 def echo(root, pretty=True):
     s = StringIO()
-    ET.ElementTree(root).write(s, xml_declaration=True)
+    ET.ElementTree(root).write(s)
     if pretty:
         xml = minidom.parseString(s.getvalue())
         return xml.toprettyxml()
