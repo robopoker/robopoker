@@ -36,7 +36,7 @@ def to_public(root, player=None):
         p.remove(p.find('transport'))
     deck = root.find('deck')
     if deck is not None:
-        root.remove(root.find('deck'))
+        root.remove(deck)
     acts = root.findall('betting/round/action')
     for a in acts:
         w = a.find('error')
