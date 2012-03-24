@@ -45,6 +45,7 @@ COMBINATION_NAME = {
     'sflush': 'Straight Flush'
 }
 
+
 def describe_combination(cardset, base, kickers):
-    # todo return something like "Straight, Ace High"
+    # TODO: return something like "Straight, Ace High"
     return COMBINATION_NAME[COMBINATION[base]]

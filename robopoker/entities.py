@@ -1,7 +1,11 @@
 import random
 from robopoker import combinations, dictionary
 
-class Card:
+__all__ = ['Card', 'Deck', 'CardSet', 'Player', 'Table']
+
+
+class Card(object):
+
     def __init__(self, rank, suit):
         self.rank = rank
         self.suit = suit
@@ -13,10 +17,15 @@ class Card:
         return self.rank == other.rank and self.suit == other.suit
 
 
-class Deck:
+class Deck(object):
+
     def __init__(self, cards=None):
         if not cards:
-            cards = [Card(r, s) for r in dictionary.RANK_NAME.keys() for s in dictionary.SUIT_NAME.keys()]
+            cards = [
+                Card(r, s)
+                for r in dictionary.RANK_NAME.keys()
+                    for s in dictionary.SUIT_NAME.keys()
+            ]
         self.cards = cards
 
     def draw(self):
@@ -26,7 +35,8 @@ class Deck:
         random.shuffle(self.cards)
 
 
-class CardSet:
+class CardSet(object):
+
     def __init__(self, cards=None):
         self.cards = []
         self.base = None
@@ -52,27 +62,30 @@ class CardSet:
         return ' '.join([repr(c) for c in self.cards])
 
 
-class Player:
+class Player(object):
+
     def __init__(self, name, transport, stack=100):
         self.name = name
         self.transport = transport
         self.pocket = CardSet()
-        self.hand = None # Actual hand (commonly pocket + community)
+        self.hand = None  # Actual hand (commonly pocket + community)
         self.stack = self.initial_stack = stack
         self.folded = False
         self.allin = False
-        self.bet = None # Current bet
-        self.blind = 0 # Current "live" post (like small blind bet)
+        self.bet = None  # Current bet
+        self.blind = 0  # Current "live" post (like small blind bet)
         self.win = 0
 
     def message(self, actions, state):
-        return self.transport.message(self.name, repr(self.pocket), actions, state)
+        return self.transport.message(
+                self.name, repr(self.pocket), actions, state)
 
 
-class Table:
+class Table(object):
+
     def __init__(self, size=9):
         self.size = size
-        self.sits = [None for k in range(0, size)]
+        self.sits = [None] * size
         self.button = 0
 
     def players(self):
