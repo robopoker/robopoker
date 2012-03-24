@@ -3,6 +3,7 @@ from urllib import urlencode
 from urllib2 import urlopen, URLError
 import socket
 
+
 def create(type, service):
     socket.setdefaulttimeout(HTTP.TIMEOUT + 2)
     return {'local': Local, 'http': HTTP}[type](service)
@@ -21,7 +22,8 @@ class Abstract(object):
 
 class Local(Abstract):
     def message(self, name, pocket, actions, state):
-        p = Popen(self.service, stdin=PIPE, stdout=PIPE,stderr=STDOUT, universal_newlines=True, shell=True)
+        p = Popen(self.service, stdin=PIPE, stdout=PIPE,
+                stderr=STDOUT, universal_newlines=True, shell=True)
         w = p.stdin.write
         w(name + "\n")
         w(pocket + "\n")
@@ -36,11 +38,13 @@ class Local(Abstract):
 
 
 class HTTP(Abstract):
+
     TIMEOUT = 5
     RETRY_CNT = 3
+
     def message(self, name, pocket, actions, state):
         data = {
-            'name' :   name,
+            'name':    name,
             'pocket':  str(pocket),
             'actions': '\n'.join(actions),
             'state':   state
@@ -55,6 +59,7 @@ class HTTP(Abstract):
                 last_err = str(e)
                 try_no += 1
         raise Error(last_err)
+
 
 class Error(Exception):
     pass

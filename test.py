@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 import re
 import os
 from glob import iglob
@@ -7,11 +7,16 @@ from StringIO import StringIO
 from robopoker.croupier import Croupier
 from robopoker.handstate.interface import HandState
 
+
 def fixtures():
-    for initial in iglob(os.path.abspath(os.path.dirname(__file__)) + '/fixture/*.in.xml'):
-        if os.path.basename(initial).startswith('_'): continue
+    current_path = os.path.abspath(os.path.dirname(__file__))
+    fixtures_pattern = current_path + '/fixture/*.in.xml'
+    for initial in iglob(fixtures_pattern):
+        if os.path.basename(initial).startswith('_'):
+            continue
         expected = re.sub(r'(\..*){2}$', '.out.xml', initial)
         yield initial, expected
+
 
 def diff(state, expected):
     tmp = file(tempfile.mkstemp()[1], 'w')
@@ -20,7 +25,9 @@ def diff(state, expected):
     code = os.system('diff -b %s %s' % (expected, tmp.name))
     return not code
 
+
 if __name__ == '__main__':
+
     for initial, expected in fixtures():
         success = False
         print '%-40s' % os.path.basename(initial),
@@ -32,5 +39,3 @@ if __name__ == '__main__':
             print 'F'
             exit(1)
         print '.'
-
-

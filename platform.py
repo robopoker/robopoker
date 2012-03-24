@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 """
 Create hand mode:
     Usage: <INPUT> | python platform.py create_hand > initial_hand_state.xml
@@ -18,16 +18,18 @@ Play hand mode:
 Publish state mode:
     Usage cat/type private.xml | python platform.py publish_state > public.xml
 """
-
 import sys
 import re
-from robopoker.entities import *
-import robopoker.transport as transport
+
+from robopoker.entities import Table, Deck, Player
+from robopoker import transport
 from robopoker.croupier import Croupier
 from robopoker.handstate.interface import HandState
 import robopoker.handstate.representation as handstate_repr
 
-class Controller:
+
+class Controller(object):
+
     def do_create_hand(self):
         def create_players():
             players = []
@@ -41,7 +43,10 @@ class Controller:
                 if sit.endswith('b'):
                     sit = sit[:-1]
                     button = int(sit)
-                players.append((int(sit), Player(data[1], transport.create(data[3], data[4]), data[2])))
+                players.append(
+                    (int(sit),
+                        Player(data[1],
+                            transport.create(data[3], data[4]), data[2])))
             return players, button
 
         def create_state(players, button):
@@ -81,6 +86,7 @@ class Controller:
 
 
 if __name__ == '__main__':
+
     if len(sys.argv) < 2:
         print __doc__
         sys.exit(1)

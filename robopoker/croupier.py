@@ -1,10 +1,17 @@
-from entities import *
-import transport
+from __future__ import absolute_import
+
 import sys
 import re
 from math import floor
+from operator import attrgetter
 
-class Croupier:
+from .entities import CardSet
+from . import dictionary
+from . import transport
+
+
+class Croupier(object):
+
     def __init__(self, state, log):
         self.state = state
         self.log_file = log
@@ -38,11 +45,13 @@ class Croupier:
         # Folded players forfeit all pots
         contenders = [p for p in self.state.table.players() if not p.folded]
         # Clean last opened pot if it is empty
-        if not self.pots[-1]: del self.pots[-1]
+        if not self.pots[-1]:
+            del self.pots[-1]
         self.showdown(contenders)
         for player in contenders:
             if player.win or player.hand:
-                self.state.add_showdown(player, player.hand and player.pocket or None)
+                self.state.add_showdown(
+                    player, player.hand and player.pocket or None)
             if player.win:
                 player.stack += player.win
         self.log_winners()
@@ -212,8 +221,8 @@ class Croupier:
         return r
 
     def collect_pots(self, players):
-        cur_pot = 0 # Current active main or side pot
-        pots = []   # When we open the side pot, main goes here
+        cur_pot = 0  # Current active main or side pot
+        pots = []    # When we open the side pot, main goes here
         # We sort players by bet to simplify all-in processing
         players.sort(lambda a, b: cmp(a.bet, b.bet))
         for i, pl in enumerate(players):
@@ -243,15 +252,17 @@ class Croupier:
 
     def showdown(self, contenders):
         # TODO: Use more sets ;)
-        # TODO: Contenders must be sorted by initial stack size and than by aggressiveness
-        contenders.sort(lambda a, b: cmp(a.initial_stack, b.initial_stack))
+        # TODO: Contenders must be sorted by initial stack size and than
+        #       by aggressiveness
+        contenders.sort(key=attrgetter('initial_stack'))
         # If players has equal initial stack
         # than they are fight for the same pot (AM I RIGHT?)
         by_stack = [[contenders[0]]]
         for player in contenders[1:]:
             last_group = by_stack[-1]
             rich = player.initial_stack > last_group[0].initial_stack
-            if player.allin and rich or  not player.allin and last_group[0].allin:
+            if (player.allin and rich or
+                    not player.allin and last_group[0].allin):
                 # start new group
                 by_stack.append([player])
             else:
@@ -261,7 +272,8 @@ class Croupier:
         pots = self.pots[:]
         last_pot = None
         while True:
-            if not pots: break
+            if not pots:
+                break
             last_pot = pots.pop()
             by_pot[last_pot] = by_stack.pop()
         for group in by_stack:
@@ -273,11 +285,12 @@ class Croupier:
 
         absolute_winners = self.determine_winners(contenders)
 
-        senior_winners = set() # absolute winners of the senior pot
-        pots_closing_index = None # reversed index of last side pot with known winner
+        senior_winners = set()  # absolute winners of the senior pot
+        pots_closing_index = None  # reversed index of last side pot with known winner
         for i, pot in enumerate(reversed(self.pots)):
             pot_winners = by_pot[pot]
-            absolute_pot_winners = set(pot_winners).intersection(set(absolute_winners)) | senior_winners
+            absolute_pot_winners = ((set(pot_winners) & set(absolute_winners)) |
+                                                                senior_winners)
             if absolute_pot_winners:
                 if pots_closing_index is None:
                     pots_closing_index = i
@@ -315,7 +328,8 @@ class Croupier:
 
     def log_act(self, player, act):
         name_stack = '%s[%d]' % (player.name, player.stack)
-        self._log('  %-10s %s[%d]' % (name_stack, act, (player.bet or 0) + player.blind))
+        self._log('  %-10s %s[%d]' %
+                (name_stack, act, (player.bet or 0) + player.blind))
         sys.stdout.flush()
 
     def log_winners(self):
@@ -324,12 +338,14 @@ class Croupier:
         for winner in winners:
             inf = [winner.name, 'wins', winner.win]
             if winner.hand:
-                combination = dictionary.describe_combination(winner.hand.cards, winner.hand.base, winner.hand.kickers)
+                combination = dictionary.describe_combination(
+                    winner.hand.cards, winner.hand.base, winner.hand.kickers)
                 inf.extend(['with', combination, winner.hand.cards])
             self._log(inf)
 
     def _log(self, s='', nl=True):
         if getattr(s, '__iter__', False):
             s = ' '.join([str(f) for f in s])
-        if nl: s += '\n'
+        if nl:
+            s += '\n'
         self.log_file.write(str(s))

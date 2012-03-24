@@ -1,5 +1,6 @@
 RANKS = [None, None, '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A']
 
+
 def rate_hand(hand):
     """
     Hand format example:
@@ -53,6 +54,7 @@ def rate_hand(hand):
         return 1, pair + ck[1][:3]
     return 0, ck[1][:5]
 
+
 def cmp_rate(rate_x, rate_y):
     for i, kx in enumerate(rate_x):
         ky = rate_y[i]
@@ -60,6 +62,7 @@ def cmp_rate(rate_x, rate_y):
         if kick:
             return kick
     return 0
+
 
 def hand_vals(hand):
     """
@@ -72,12 +75,13 @@ def hand_vals(hand):
     values.sort()
     return values
 
+
 def count_kind(vals):
     """
     A somewhat crufty sorting method for poker.
     Inventor: http://charlesleifer.com/blog/robopoker-hand-evaluation-project-euler-54/
     """
-    ck = { 1: [], 2: [], 3: [], 4: [] }
+    ck = {1: [], 2: [], 3: [], 4: []}
     for card in vals:
         added = False
         for i in range(3, 0, -1):
@@ -85,7 +89,7 @@ def count_kind(vals):
                 card_list = ck[i]
                 idx = card_list.index(card)
                 del(ck[i][idx])
-                ck[i+1].append(card)
+                ck[i + 1].append(card)
                 added = True
                 break
         if not added:
@@ -102,12 +106,14 @@ def count_kind(vals):
         del(ck[2][-1])
     return ck
 
+
 def flush(hand):
     suits = {'S': 0, 'H': 0, 'D': 0, 'C': 0}
     for card in hand:
         if suits[card[1]] < 5:
             suits[card[1]] += 1
     return 5 in suits.values()
+
 
 def straight(vals):
     """
@@ -171,7 +177,11 @@ if __name__ == '__main__':
         for rate_x, rate_y, expected in fixture:
             actual = cmp_rate(rate_x, rate_y)
             if not silent:
-                print '%-20s %-20s %s' % (rate_x, rate_y, expected == actual and 'ok' or str(expected) + '!!!' + str(actual))
+                print '%-20s %-20s %s' % (
+                    rate_x, rate_y,
+                    'ok'
+                    if expected == actual
+                    else str(expected) + '!!!' + str(actual))
 
     test_rate()
     test_cmp()
