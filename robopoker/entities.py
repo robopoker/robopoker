@@ -1,5 +1,5 @@
 import random
-from robopoker import combinations, dictionary
+from robopoker import combinations, dictionary, shuffler
 
 __all__ = ['Card', 'Deck', 'CardSet', 'Player', 'Table']
 
@@ -32,7 +32,7 @@ class Deck(object):
         return self.cards.pop()
 
     def shuffle(self):
-        random.shuffle(self.cards)
+        shuffler.shuffle(self.cards)
 
 
 class CardSet(object):
