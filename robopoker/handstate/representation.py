@@ -6,7 +6,7 @@ from StringIO import StringIO
 
 from ..entities import Player, Table, Card, Deck
 from .. import transport
-import interface
+from . import interface
 
 __all__ = ['dump', 'open', 'parse', 'echo', 'to_public']
 
