@@ -28,7 +28,6 @@ class Croupier(object):
         )
 
     def conduct(self):
-        self._log('DEAL')
         self.deal_pockets()
         for i, (round, draw, bet) in enumerate(self.structure):
             self._log('%-10s  ' % str(round).upper(), False)
@@ -57,6 +56,7 @@ class Croupier(object):
         self.log_winners()
 
     def deal_pockets(self):
+        self._log('DEAL')
         players = self.state.table.players()
         for card in range(0, 2):
             for p in players:
