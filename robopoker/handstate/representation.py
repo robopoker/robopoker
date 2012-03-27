@@ -1,10 +1,11 @@
+from __future__ import absolute_import
+
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 from StringIO import StringIO
 
-from robopoker.entities import Player, Table, Card, Deck
-from robopoker import transport
-# FIXME: fix cyclic dependency
+from ..entities import Player, Table, Card, Deck
+from .. import transport
 import interface
 
 __all__ = ['dump', 'open', 'parse', 'echo', 'to_public']

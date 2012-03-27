@@ -1,7 +1,3 @@
-# FIXME: fix cyclic dependency
-from representation import dump, parse
-
-
 class HandState(object):
 
     def __init__(self, table, deck):
@@ -34,10 +30,3 @@ class HandState(object):
             'win': player.win,
             'hand': hand
         })
-
-    def dump(self, public=True):
-        return dump(self, public)
-
-    @staticmethod
-    def load(source):
-        return parse(source)

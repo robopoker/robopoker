@@ -8,7 +8,7 @@ from operator import attrgetter
 from .entities import CardSet
 from . import dictionary
 from . import transport
-
+from .handstate.representation import dump as dump_handstate
 
 class Croupier(object):
 
@@ -127,7 +127,7 @@ class Croupier(object):
                 possible = self.possible_actions(player, players, cur_bet, min_bet)
                 error = None
                 try:
-                    response = player.message(possible.keys(), self.state.dump())
+                    response = player.message(possible.keys(), dump_handstate(self.state))
                 except transport.Error as e:
                     error = (str(e), 'transport')
                     self._log('ERROR: transport error ' + str(e))

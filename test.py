@@ -6,6 +6,7 @@ import tempfile
 from StringIO import StringIO
 from robopoker.croupier import Croupier
 from robopoker.handstate.interface import HandState
+import robopoker.handstate.representation as handstate_repr
 
 
 def fixtures():
@@ -20,7 +21,7 @@ def fixtures():
 
 def diff(state, expected):
     tmp = file(tempfile.mkstemp()[1], 'w')
-    tmp.write(state.dump(False))
+    tmp.write(handstate_repr.dump(state, False))
     tmp.close()
     code = os.system('diff -b %s %s' % (expected, tmp.name))
     return not code
@@ -31,7 +32,7 @@ if __name__ == '__main__':
     for initial, expected in fixtures():
         success = False
         print '%-40s' % os.path.basename(initial),
-        state = HandState.load(file(initial))
+        state = handstate_repr.parse(file(initial))
         croupier = Croupier(state, StringIO())
         croupier.conduct()
         success = diff(state, expected)

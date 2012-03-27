@@ -64,15 +64,15 @@ class Controller(object):
         dest = sys.stdout
         players, button = create_players()
         state = create_state(players, button)
-        dest.write(state.dump(False))
+        dest.write(handstate_repr.dump(state, False))
 
     def do_play_hand(self):
         source = sys.stdin
         dest = sys.stdout
-        state = HandState.load(source)
+        state = handstate_repr.parse(source)
         croupier = Croupier(state, sys.stderr)
         croupier.conduct()
-        dest.write(state.dump(False))
+        dest.write(handstate_repr.dump(state, False))
 
     def do_publish_state(self):
         player = None
