@@ -151,15 +151,9 @@ class Croupier(object):
                 # Currently action amount is just one that possible
                 # TODO: not-so-limit game, where player may determine amount of his bet
                 amount = possible[act]
-                extra = amount - (player.bet or 0) - player.blind
+                extra = amount - player.table_chips()
                 assert extra >= 0
-                # Maybe it is all-in
-                if extra >= player.stack:
-                    self._log('WARNING: unexpected allin')
-                    extra = player.stack
-                    amount = player.blind + (player.bet or 0) + extra
-                    player.allin = True
-                    act = 'allin'
+
                 player.stack -= extra
                 player.bet = amount
                 if amount > cur_bet:
@@ -167,6 +161,9 @@ class Croupier(object):
                 # Ok, player check or bet his blind post.
                 # Now it is bet
                 player.blind = 0
+                if not player.stack:
+                    assert act == 'allin'
+                    player.allin = True
                 self.log_act(player, act)
                 self.state.add_action(round, player, act, amount, error)
             # Loop is done
@@ -201,23 +198,39 @@ class Croupier(object):
         return True
 
     def possible_actions(self, player, players, cur_bet, min_bet):
+        # Returns hash where keys are ids of possible action
+        # and values are action amounts
         if player.blind and player.blind == cur_bet:
             # We are here if all players
             # just call the Blind post or fold.
             # Blind player has an option
             # to check his post or raise it
-            r = {'check': player.blind, 'raise': player.blind + min_bet}
+            r = {'check': player.blind}
+            if player.stack > min_bet:
+                r['raise'] = player.blind + min_bet
+            else:
+                r['allin'] = player.blind + player.stack
         elif cur_bet:
-            r = {'call': cur_bet}
-            if len([pl for pl in players if not pl.allin and not pl.folded]) > 1:
-                if cur_bet + min_bet <= min_bet * 4:
-                    r['raise'] = cur_bet + min_bet
+            allin_amount = player.table_chips() + player.stack
+            if cur_bet >= allin_amount:
+                r = {'allin': allin_amount}
+            else:
+                r = {'call': cur_bet}
+                active_players = [pl for pl in players if not pl.allin and not pl.folded]
+                if len(active_players) > 1:
+                    raise_amount = cur_bet + min_bet
+                    if raise_amount <= min_bet * 4:
+                        # Ok, we can raise. Check the amount
+                        if raise_amount > allin_amount:
+                            r['allin'] = allin_amount
+                        else:
+                            r['raise'] = raise_amount
         else:
             r = {'check': 0, 'bet': min_bet}
         # Player may fold any time.
         # Action amount equals to chips
         # that already on the table
-        r['fold'] = player.blind + (player.bet or 0)
+        r['fold'] = player.table_chips()
         return r
 
     def collect_pots(self, players):
@@ -329,7 +342,7 @@ class Croupier(object):
     def log_act(self, player, act):
         name_stack = '%s[%d]' % (player.name, player.stack)
         self._log('  %-10s %s[%d]' %
-                (name_stack, act, (player.bet or 0) + player.blind))
+                (name_stack, act, player.table_chips()))
         sys.stdout.flush()
 
     def log_winners(self):

@@ -80,6 +80,9 @@ class Player(object):
         return self.transport.message(
                 self.name, repr(self.pocket), actions, state)
 
+    def table_chips(self):
+        return self.blind + (self.bet or 0)
+
 
 class Table(object):
 
