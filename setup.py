@@ -3,7 +3,7 @@ import py2exe
 
 setup(
     name='robopoker-sdk-src',
-    version='0.25',
+    version='0.26',
     description='Poker engine and bot development kit',
     url='http://robopoker.org',
     download_url='http://robopoker.org.vbo.dev.vbo.name/about/sdk/',
