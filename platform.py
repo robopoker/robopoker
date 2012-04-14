@@ -11,7 +11,8 @@ Create hand mode:
     <sit><b?> <name>   <stack>   <type>   <service>\n for each player
 
 Play hand mode:
-    Usage: cat/type initial_hand_state.xml | python platform.py play_hand 1> result_hand_state.xml 2> croupier.log
+    Usage: cat/type initial_hand_state.xml | python platform.py play_hand \
+           1> result_hand_state.xml 2> croupier.log
 
     Perform robopoker play from the initial hand state to the awarding.
 
