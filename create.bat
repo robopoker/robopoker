@@ -1,2 +1,2 @@
 @echo off
-type hand_players.list | python platform.py create_hand
+python platform.py create_hand < hand_players.list
