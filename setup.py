@@ -3,9 +3,11 @@ import py2exe
 
 setup(
     name='robopoker-sdk-src',
-    version='0.26',
+    version='0.27',
     description='Poker engine and SDK for RoboPoker project',
     url='http://robopoker.org',
+    author='RoboPoker Team',
+    author_email='robopoker@robopoker.org',
     download_url='http://robopoker.org/about/sdk/',
     packages=['robopoker', 'robopoker.handstate'],
     scripts=['platform.py'],
