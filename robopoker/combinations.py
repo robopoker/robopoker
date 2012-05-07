@@ -137,15 +137,19 @@ def straight(vals):
             vals.insert(0, 1) # simulate an ace at the beginning
     seq = 1
     last = len(vals) - 1
+    # count sequential vals
+    # trying to find longest sequence
     for i, x in enumerate(vals):
-        if last == i:
-            return 0
-        next = vals[i + 1]
+        next = None
+        if last != i:
+            next = vals[i + 1]
         if next == x + 1:
             seq += 1
-            if seq == 5:
-                return next
         elif next != x:
+            if seq >= 5:
+                return x
+            if not next:
+                return 0
             seq = 1
 
 
@@ -165,6 +169,7 @@ if __name__ == '__main__':
             ['AS KS QD JS TS 5S',    'flush',  [14, 13, 11, 10, 5]],
             ['AD 2S 3C 4S TS 5D',    'str',    [5]],
             ['2S 3S 4S 5S 6D',       'str',    [6]],
+            ['2S 3S 4S 5S 6D 7D',    'str',    [7]],
             ['3D 3S 3H AS 4D QH 5H', 'set',    [3, 14, 12]],
             ['3D 3S AH AS 4D 6H',    'two',    [14, 3, 6]],
             ['3D 3S 5H AS 4D',       'pair',   [3, 14, 5, 4]],
