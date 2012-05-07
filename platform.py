@@ -73,7 +73,8 @@ class Controller(object):
         state = handstate_repr.parse(source)
         croupier = Croupier(state, sys.stderr)
         croupier.conduct()
-        dest.write(handstate_repr.dump(state, False))
+        dump = handstate_repr.dump(state, False)
+        print >> dest, dump,
 
     def do_publish_state(self):
         player = None
