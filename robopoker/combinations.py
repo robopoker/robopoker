@@ -36,11 +36,12 @@ def rate_hand(hand):
     if fl:
         str = straight(fl)
         if str:
-            return 8, [str]
-        return 5, [x for x in reversed(fl)]
+            return 8, str
+        fl.reverse()
+        return 5, fl
     str = straight(vals)
     if str:
-        return 4, [str]
+        return 4, str
     ck = count_kind(vals)
     if len(ck[4]):
         return 7, ck[4] + ck[1][:1]
@@ -121,16 +122,12 @@ def flush(hand):
             break
     if not fl:
         return []
-    vals = hand_vals(fl)
     # for >5 cards hands we need to use higher flush only
-    vals.reverse()
-    return sorted(vals[:5])
+    vals = hand_vals(fl)
+    return vals[-5:]
 
 
 def straight(vals):
-    """
-    Returns kicker or 0 in case of fail
-    """
     vals = vals[:] # vals is mutable. copy.
     for x in range(len(vals), 4, -1):
         if vals[x - 1] == 14:
@@ -147,9 +144,9 @@ def straight(vals):
             seq += 1
         elif next != x:
             if seq >= 5:
-                return x
+                return [x]
             if not next:
-                return 0
+                return []
             seq = 1
 
 
@@ -167,6 +164,7 @@ if __name__ == '__main__':
             ['AS 2S 3S TS QS',       'flush',  [14, 12, 10, 3,  2]],
             ['AD 2S 3S TS QS 5S',    'flush',  [12, 10, 5,  3,  2]],
             ['AS KS QD JS TS 5S',    'flush',  [14, 13, 11, 10, 5]],
+            ['AS KS QD TS 5S 2S JS', 'flush',  [14, 13, 11, 10, 5]],
             ['AD 2S 3C 4S TS 5D',    'str',    [5]],
             ['2S 3S 4S 5S 6D',       'str',    [6]],
             ['2S 3S 4S 5S 6D 7D',    'str',    [7]],
