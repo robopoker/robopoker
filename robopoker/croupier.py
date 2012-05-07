@@ -162,7 +162,7 @@ class Croupier(object):
                 # Now it is bet
                 player.blind = 0
                 if not player.stack:
-                    assert act == 'allin'
+                    assert act == 'allin', ('empty stack without allin. act: ' + act)
                     player.allin = True
                 self.log_act(player, act)
                 self.state.add_action(round, player, act, amount, error)
@@ -226,7 +226,13 @@ class Croupier(object):
                         else:
                             r['raise'] = raise_amount
         else:
-            r = {'check': 0, 'bet': min_bet}
+            r = {'check': 0}
+            allin_amount = player.table_chips() + player.stack
+            if min_bet >= allin_amount:
+                r['allin'] = allin_amount
+            else:
+                r['bet'] = min_bet
+
         # Player may fold any time.
         # Action amount equals to chips
         # that already on the table
