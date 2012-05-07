@@ -32,11 +32,13 @@ def rate_hand(hand):
          combination. Kickers are sorted by its priority.
     """
     vals = hand_vals(hand)
-    str = straight(vals)
-    if flush(hand):
+    fl = flush(hand)
+    if fl:
+        str = straight(fl)
         if str:
             return 8, [str]
-        return 5, [x for x in reversed(vals)][:5]
+        return 5, [x for x in reversed(fl)]
+    str = straight(vals)
     if str:
         return 4, [str]
     ck = count_kind(vals)
@@ -108,11 +110,21 @@ def count_kind(vals):
 
 
 def flush(hand):
-    suits = {'S': 0, 'H': 0, 'D': 0, 'C': 0}
+    suits = {'S': [], 'H': [], 'D': [], 'C': []}
+    # index cards by suit
     for card in hand:
-        if suits[card[1]] < 5:
-            suits[card[1]] += 1
-    return 5 in suits.values()
+        suits[card[1]].append(card)
+    fl = None
+    for (s, cards) in suits.items():
+        if (len(cards) >= 5):
+            fl = cards
+            break
+    if not fl:
+        return []
+    vals = hand_vals(fl)
+    # for >5 cards hands we need to use higher flush only
+    vals.reverse()
+    return sorted(vals[:5])
 
 
 def straight(vals):
@@ -138,7 +150,7 @@ def straight(vals):
 
 
 if __name__ == '__main__':
-    from robopoker import dictionary
+    import dictionary
 
     def test_rate(silent=False):
         fixture = [
@@ -149,7 +161,8 @@ if __name__ == '__main__':
             ['3D 3C 3S AD AH',       'full',   [3, 14]],
             ['AC 7S 6H AH 8H 2D AD', 'set',    [14, 8, 7]],
             ['AS 2S 3S TS QS',       'flush',  [14, 12, 10, 3,  2]],
-            ['AD 2S 3S TS QS TS',    'flush',  [14, 12, 10, 10, 3]],
+            ['AD 2S 3S TS QS 5S',    'flush',  [12, 10, 5,  3,  2]],
+            ['AS KS QD JS TS 5S',    'flush',  [14, 13, 11, 10, 5]],
             ['AD 2S 3C 4S TS 5D',    'str',    [5]],
             ['2S 3S 4S 5S 6D',       'str',    [6]],
             ['3D 3S 3H AS 4D QH 5H', 'set',    [3, 14, 12]],
