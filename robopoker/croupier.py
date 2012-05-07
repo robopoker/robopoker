@@ -221,7 +221,7 @@ class Croupier(object):
                     raise_amount = cur_bet + min_bet
                     if raise_amount <= min_bet * 4:
                         # Ok, we can raise. Check the amount
-                        if raise_amount > allin_amount:
+                        if raise_amount >= allin_amount:
                             r['allin'] = allin_amount
                         else:
                             r['raise'] = raise_amount
