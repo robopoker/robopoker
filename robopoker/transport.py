@@ -55,7 +55,7 @@ class HTTP(Abstract):
             try:
                 response = urlopen(self.service, urlencode(data), HTTP.TIMEOUT)
                 return response.read().strip()
-            except (URLError, socket.timeout) as e:
+            except (URLError, socket.timeout, socket.error) as e:
                 last_err = str(e)
                 try_no += 1
         raise Error(last_err)
